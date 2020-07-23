@@ -116,13 +116,26 @@ int validarCedula(struct persona *n, int x, int cont){//VALIDAR CEDULA, DEVUELVE
 	}else return 0; //Es decir que no se encontró ninguna cedula igual, es falso
 }
 
-int validarPlaca(struct persona *n, int cont,char y[8]){//VALIDAR CEDULA, DEVUELVE EN QUE POSICION SE ENCUENTRA LA CEDULA. 0 SI NO
-	int x;	
-	if (n){
+int validarPlaca2(struct vehiculo *m, persona *n, int cont,char y[8]){	
+	int x;
+	if (m){
 			struct vehiculo *aux = n->datosVehiculo;
 			x=strcmp(aux->placa, y);
+	}	
+}
+
+int validarPlaca(struct persona *n, int cont,char y[8]){//VALIDAR CEDULA, DEVUELVE EN QUE POSICION SE ENCUENTRA LA CEDULA. 0 SI NO
+	int x;
+	struct vehiculo *aux = n->datosVehiculo;
+	if (n){
+			struct vehiculo *m;
+			return validarPlaca2(m, n, cont, y);
+			x=strcmp(aux->placa, y);
 			if (x == 0) return cont; //Se encontro una placa igual
-			else return validarPlaca(n->personaProx, ++cont, y); 
+			else {
+				if (m->vehiculoProx) return validarPlaca2(m->vehiculoProx, n, ++cont, y);
+				else return validarPlaca(n->personaProx, ++cont, y); 
+			}
 	}else return 0; //Es decir que no se encontró ninguna cedula igual, es falso
 }
 
