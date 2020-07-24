@@ -841,3 +841,4 @@ void consultarPersonaCedula(struct persona *p){
 	system("pause");
 	system("cls");
 }
+ 
