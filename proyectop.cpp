@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include <string.h>
-#include <cstring>
+#include <string>
 
 struct fecha{                                        //ESTRUCTURA FECHA
 	int yy;                                            //AÃ‘O
@@ -180,7 +180,7 @@ struct infraccion * agregarInfraccion(){
 	gets(auxInfraccion->pagado);
 	strcpy(auxInfraccion->pagado,strupr(auxInfraccion->pagado));
 	
-	while ((strnmp(auxInfraccion->pagado,"SI")!=0)||(strnmp(auxInfraccion->pagado,"NO")!=0)){   //******************VALIDACION SI PAGO MULTA O NO********************
+	while ((strcmp(auxInfraccion->pagado,"SI")!=0)||(strcmp(auxInfraccion->pagado,"NO")!=0)){   //******************VALIDACION SI PAGO MULTA O NO********************
 		printf("\n\n\t\t\t\tLa respuesta introducida no es valida\n\n");
 		printf("\n\n\t\t\t\tSolo se permiten las siguientes respuestas: 'SI' o 'NO'\n\n");
 		system("pause");
