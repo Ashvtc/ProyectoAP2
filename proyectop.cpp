@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include <string.h>
+#include <cstring>
 
 struct fecha{                                        //ESTRUCTURA FECHA
 	int yy;                                            //AÃ‘O
@@ -141,15 +142,58 @@ struct infraccion * agregarInfraccion(){
 	scanf("%i",&auxInfraccion->monto);
 
 
-	printf("\n\t\t\tIngrese el dia en que se registro la infraccion: "); 
+	printf("\n\t\t\tIngrese el dia en que se registro la infraccion: ");
 	scanf("%i",&auxInfraccion->fechaInfraccion.dd);
+	
+	while(auxInfraccion->fechaInfraccion.dd>31||(auxInfraccion->fechaInfraccion.dd<=0)){ //**********VALIDACION DE DIA DE REGISTRO DE INFRACCION************************
+		system("cls");
+		printf("\n\n\t\t\t\tIngrese un valor valido (1-31)\n\n");
+		system("pause");
+		system("cls");
+		printf("\n\t\t\tIngrese el numero de infraccion: %i",&auxInfraccion->numero);
+		printf("\n\t\t\tIngrese el tipo de infraccion: %s",auxInfraccion->tipo);
+		printf("\n\t\t\tIngrese el monto de la infraccion: %i",&auxInfraccion->monto);
+		printf("\n\n\t\t\tIngrese el dia en que se registro la infraccion: ");
+		scanf("%i",&auxInfraccion->fechaInfraccion.dd);
+	}
+	
 	printf("\n\t\t\tIngrese el mes en que se registro la infraccion: "); 
 	scanf("%i",&auxInfraccion->fechaInfraccion.mm);
+	
+	while((auxInfraccion->fechaInfraccion.mm>12)||(auxInfraccion->fechaInfraccion.mm<=0)){ //**********VALIDACION DEL MES DE REGISTRO INFRACCION************************
+		system("cls");
+		printf("\n\n\t\t\t\tIngrese un valor valido (1-12)\n\n");
+		system("pause");
+		system("cls");
+		printf("\n\t\t\tIngrese el numero de infraccion: %i",&auxInfraccion->numero);
+		printf("\n\t\t\tIngrese el tipo de infraccion: %s",auxInfraccion->tipo);
+		printf("\n\t\t\tIngrese el monto de la infraccion: %i",&auxInfraccion->monto);
+		printf("\n\n\t\t\tIngrese el dia en que se registro la infraccion: %i",&auxInfraccion->fechaInfraccion.dd);
+		printf("\n\n\t\t\tIngrese el mes en que se registro la infraccion: ");
+		scanf("%i",&auxInfraccion->fechaInfraccion.mm);
+	}
+
 	printf("\n\t\t\tIngrese el año en que se registro la infraccion: "); 
 	scanf("%i",&auxInfraccion->fechaInfraccion.yy);
 	
 	printf("\n\t\t\tIngrese si la multa ha sido pagada (SI/NO): "); 
 	gets(auxInfraccion->pagado);
+	strcpy(auxInfraccion->pagado,strupr(auxInfraccion->pagado));
+	
+	while ((strnmp(auxInfraccion->pagado,"SI")!=0)||(strnmp(auxInfraccion->pagado,"NO")!=0)){   //******************VALIDACION SI PAGO MULTA O NO********************
+		printf("\n\n\t\t\t\tLa respuesta introducida no es valida\n\n");
+		printf("\n\n\t\t\t\tSolo se permiten las siguientes respuestas: 'SI' o 'NO'\n\n");
+		system("pause");
+		system("cls");
+		printf("\n\t\t\tIngrese el numero de infraccion: %i",&auxInfraccion->numero);
+		printf("\n\t\t\tIngrese el tipo de infraccion: %s",auxInfraccion->tipo);
+		printf("\n\t\t\tIngrese el monto de la infraccion: %i",&auxInfraccion->monto);
+		printf("\n\t\t\tIngrese el dia en que se registro la infraccion: %i",&auxInfraccion->fechaInfraccion.dd);
+		printf("\n\t\t\tIngrese el mes en que se registro la infraccion: %i",&auxInfraccion->fechaInfraccion.mm);
+		printf("\n\t\t\tIngrese el año en que se registro la infraccion: %i",&auxInfraccion->fechaInfraccion.yy);
+		printf("\n\t\t\tIngrese si la multa ha sido pagada (SI/NO): "); 
+		gets(auxInfraccion->pagado);
+	}
 	
 	auxInfraccion->infraccionProx = NULL;
 	return auxInfraccion;
@@ -224,6 +268,7 @@ void agregarPersona(struct persona **p){
 		gets(aux->nombre);
 	}
 	strcpy(aux->nombre,strupr(aux->nombre));
+	
 	printf("\n\t\t\tIngrese los apellidos (20 caracteres max): "); 
 	gets(aux->apellidos);
 	
