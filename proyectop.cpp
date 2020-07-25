@@ -210,9 +210,9 @@ struct infraccion * agregarInfraccion(){
 	printf("\n\t\t\tIngrese el año en que se registro la infraccion: "); 
 	scanf("%i",&(*auxInfraccion).fechaInfraccion.yy);
 	
-	while(auxInfraccion->fechaInfraccion.yy>2020){                              //**********VALIDACION DEL AÃ‘O DE REGISTRO INFRACCION************************
+	while((auxInfraccion->fechaInfraccion.yy>2020)||(auxInfraccion->fechaInfraccion.yy<1)){  //**********VALIDACION DEL AÃ‘O DE REGISTRO INFRACCION****************
 		system("cls");
-		printf("\n\n\t\t\t\tIngrese un valor valido (hasta 2020)\n\n");
+		printf("\n\n\t\t\t\tIngrese un valor valido (desde 1 hasta 2020)\n\n");
 		system("pause");
 		system("cls");
 		printf("\n\n\t\t\tIngrese el numero de infraccion: %i",auxInfraccion->numero);
@@ -272,9 +272,9 @@ struct vehiculo * agregarVehiculo(){
 	printf("\n\t\t\tIngrese el a%co (yyyy): ",164); 
 	scanf("%i",&auxVehiculo->annio.yy);
 	
-	while(auxVehiculo->annio.yy>2020){                              //**********VALIDACION DEL AÃ‘O DE REGISTRO INFRACCION************************
+	while((auxVehiculo->annio.yy>2020)||(auxVehiculo->annio.yy<1)){               //**********VALIDACION DEL AÃ‘O DEL MODELO VEHICULO************************
 		system("cls");
-		printf("\n\n\t\t\t\tIngrese un valor valido (hasta 2020)\n\n");
+		printf("\n\n\t\t\t\tIngrese un valor valido (desde 1 hasta 2020)\n\n");
 		system("pause");
 		system("cls");
 		printf("\n\n\t\t\tIngrese la placa: %s",auxVehiculo->placa);
@@ -393,9 +393,9 @@ void agregarPersona(struct persona **p){
 	printf("\n\t\t\tIngrese el a%co (yyyy) de nacimiento: ",164);
 	scanf("%i",&aux->fechaNacimiento.yy);
 	
-	while(aux->fechaNacimiento.yy>2020){                 //**********VALIDACION DEL AÃ‘O DE NACIMIENTO************************
+	while((aux->fechaNacimiento.yy>2020)||(aux->fechaNacimiento.yy<1)){                 //**********VALIDACION DEL AÃ‘O DE NACIMIENTO************************
 		system("cls");
-		printf("\n\n\t\t\t\tIngrese un valor valido (hasta 2020)\n\n");
+		printf("\n\n\t\t\t\tIngrese un valor valido (desde 1 hasta 2020)\n\n");
 		system("pause");
 		system("cls");
 		printf("\n\t\t\tIngrese el nombre (20 caracteres max): %s",aux->nombre);
@@ -756,9 +756,9 @@ void modificarPersona(struct persona **p){
 	printf("\n\t\t\tIngrese el a%co (yyyy) de nacimiento: ",164);
 	scanf("%i",&aux->fechaNacimiento.yy);
 	
-	while(aux->fechaNacimiento.yy>2020){                 //**********VALIDACION DEL AÃ‘O DE NACIMIENTO************************
+	while((aux->fechaNacimiento.yy>2020)||(aux->fechaNacimiento.yy<1)){                 //**********VALIDACION DEL AÃ‘O DE NACIMIENTO************************
 		system("cls");
-		printf("\n\n\t\t\t\tIngrese un valor valido (hasta 2020)\n\n");
+		printf("\n\n\t\t\t\tIngrese un valor valido (desde 1 hasta 2020)\n\n");
 		system("pause");
 		system("cls");
 		printf("\n\t\t\tIngrese el nombre (20 caracteres max): %s",aux->nombre);
@@ -950,4 +950,3 @@ void consultarVehiculoPlaca(struct persona *r){
 	system("pause");
 	system("cls");
 }
-
