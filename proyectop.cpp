@@ -173,12 +173,27 @@ struct infraccion * agregarInfraccion(){
 
 	printf("\n\t\t\tIngrese el año en que se registro la infraccion: "); 
 	scanf("%i",&(*auxInfraccion).fechaInfraccion.yy);
+	
+	while(auxInfraccion->fechaInfraccion.yy>2020){                              //**********VALIDACION DEL AÃ‘O DE REGISTRO INFRACCION************************
+		system("cls");
+		printf("\n\n\t\t\t\tIngrese un valor valido (hasta 2020)\n\n");
+		system("pause");
+		system("cls");
+		printf("\n\n\t\t\tIngrese el numero de infraccion: %i",auxInfraccion->numero);
+		printf("\n\n\t\t\tIngrese el tipo de infraccion: %s",auxInfraccion->tipo);
+		printf("\n\n\t\t\tIngrese el monto de la infraccion: %i",auxInfraccion->monto);
+		printf("\n\n\t\t\tIngrese el dia en que se registro la infraccion: %i",auxInfraccion->fechaInfraccion.dd);
+		printf("\n\n\t\t\tIngrese el mes en que se registro la infraccion: %i",auxInfraccion->fechaInfraccion.mm);
+		printf("\n\t\t\tIngrese el año en que se registro la infraccion: ");
+		scanf("%i",&(*auxInfraccion).fechaInfraccion.yy);
+	}
+	
 	freeBuffer();
 	printf("\n\t\t\tIngrese si la multa ha sido pagada (SI/NO): "); 
 	gets(auxInfraccion->pagado);
 	strcpy(auxInfraccion->pagado,strupr(auxInfraccion->pagado));
 	
-	while ((strcmp(auxInfraccion->pagado,"SI")!=0)||(strcmp(auxInfraccion->pagado,"NO")!=0)){   //******************VALIDACION SI PAGO MULTA O NO********************
+	while ((strcmp(auxInfraccion->pagado,"SI")==0)||(strcmp(auxInfraccion->pagado,"NO")==0)){   //******************VALIDACION SI PAGO MULTA O NO********************
 		printf("\n\n\t\t\t\tLa respuesta introducida no es valida\n\n");
 		printf("\n\n\t\t\t\tSolo se permiten las siguientes respuestas: 'SI' o 'NO'\n\n");
 		system("pause");
@@ -327,6 +342,20 @@ void agregarPersona(struct persona **p){
 	
 	printf("\n\t\t\tIngrese el a%co (yyyy) de nacimiento: ",164);
 	scanf("%i",&aux->fechaNacimiento.yy);
+	
+	while(aux->fechaNacimiento.yy>2020){                 //**********VALIDACION DEL AÃ‘O DE NACIMIENTO************************
+		system("cls");
+		printf("\n\n\t\t\t\tIngrese un valor valido (hasta 2020)\n\n");
+		system("pause");
+		system("cls");
+		printf("\n\t\t\tIngrese el nombre (20 caracteres max): %s",aux->nombre);
+		printf("\n\n\t\t\tIngrese los apellidos (20 caracteres max): %s",aux->apellidos);
+		printf("\n\n\t\t\tIngrese la cedula: %li",aux->cedula);	
+		printf("\n\n\t\t\tIngrese el dia (dd) de nacimiento: %i",aux->fechaNacimiento.dd);
+		printf("\n\n\t\t\tIngrese el mes (mm) de nacimiento: %i",aux->fechaNacimiento.mm);
+		printf("\n\t\t\tIngrese el a%co (yyyy) de nacimiento: ",164);
+		scanf("%i",&aux->fechaNacimiento.yy);
+	}
 	
 	freeBuffer();
 	printf("\n\t\t\tIngrese la ciudad de nacimiento (40 caracteres max): ");
@@ -705,6 +734,20 @@ void modificarPersona(struct persona **p){
 	
 	printf("\n\t\t\tIngrese el a%co (yyyy) de nacimiento: ",164);
 	scanf("%i",&aux->fechaNacimiento.yy);
+	
+	while(aux->fechaNacimiento.yy>2020){                 //**********VALIDACION DEL AÃ‘O DE NACIMIENTO************************
+		system("cls");
+		printf("\n\n\t\t\t\tIngrese un valor valido (hasta 2020)\n\n");
+		system("pause");
+		system("cls");
+		printf("\n\t\t\tIngrese el nombre (20 caracteres max): %s",aux->nombre);
+		printf("\n\n\t\t\tIngrese los apellidos (20 caracteres max): %s",aux->apellidos);
+		printf("\n\n\t\t\tIngrese la cedula: %li",aux->cedula);	
+		printf("\n\n\t\t\tIngrese el dia (dd) de nacimiento: %i",aux->fechaNacimiento.dd);
+		printf("\n\n\t\t\tIngrese el mes (mm) de nacimiento: %i",aux->fechaNacimiento.mm);
+		printf("\n\t\t\tIngrese el a%co (yyyy) de nacimiento: ",164);
+		scanf("%i",&aux->fechaNacimiento.yy);
+	}
 	
 	freeBuffer();
 	printf("\n\t\t\tIngrese la ciudad de nacimiento (40 caracteres max): ");
