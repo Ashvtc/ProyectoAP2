@@ -88,6 +88,7 @@ void buscarPersonaID(struct persona *p, int id);
 
 void consultarPersonaCedula(struct persona *p);
 
+void consultarVehiculoPlaca(struct persona *r);
 
 int main(){         //*************************FUNCION PRINCIPAL***************************
 
@@ -111,6 +112,41 @@ int main(){         //*************************FUNCION PRINCIPAL****************
 	return 0;
 }
 
+///////////////////////////////////////////////////////////FUNCIONES MENUS///////////////////////////////////////////////////////////////
+
+void menuPersonas(){
+	
+	int opcion = 1;
+	while(opcion){
+		system("cls");
+		encabezado();
+		printf("\t\t\t\t\t MANTENIMIENTO->PERSONAS\n\n");
+		printf("\t\t\t\t {POR FAVOR ESCRIBA LA OPCION QUE DESEA}\n\n");
+		printf("\t\t\t\t\t(1)--AGREGAR\n");
+		printf("\t\t\t\t\t(2)--MODIFICAR\n");
+		printf("\t\t\t\t\t(3)--CONSULTAR\n");
+		printf("\t\t\t\t\t(4)--BORRAR\n");
+		printf("\t\t\t\t\t(0)--ATRAS\n\n\t\t\t\t\t\t\t");
+		scanf("%i",&opcion);
+		system("cls");
+		
+		switch (opcion){
+			case 1: agregarPersona(&p);//LLAMADA A LA FUNCION agregarPersona
+				break;
+			case 2: modificarPersona(&p);//LLAMADA A LA FUNCION modificarPersona
+				break;
+			case 3: menuConsultarPersona();//LLAMADA A LA FUNCION menuConsultarPersona
+				break;
+			case 4: //LLAMADA A LA FUNCION borrarPersona
+
+				break;
+		}
+	}
+}
+
+
+
+///////////////////////////////////////////////////////////FUNCIONES MENUS///////////////////////////////////////////////////////////////
 
 void encabezado(){                                   //ENCABEZADO PARA MOSTRAR EN LOS MENÃšS
 		printf("\t\t\t\t\tMENU DE CONTROL DE MULTAS\n");
@@ -193,7 +229,7 @@ struct infraccion * agregarInfraccion(){
 	gets(auxInfraccion->pagado);
 	strcpy(auxInfraccion->pagado,strupr(auxInfraccion->pagado));
 	
-	while ((strcmp(auxInfraccion->pagado,"SI")==0)||(strcmp(auxInfraccion->pagado,"NO")==0)){   //******************VALIDACION SI PAGO MULTA O NO********************
+	while ((strcmp(auxInfraccion->pagado,"SI")!=0)||(strcmp(auxInfraccion->pagado,"NO")!=0)){   //******************VALIDACION SI PAGO MULTA O NO********************
 		printf("\n\n\t\t\t\tLa respuesta introducida no es valida\n\n");
 		printf("\n\n\t\t\t\tSolo se permiten las siguientes respuestas: 'SI' o 'NO'\n\n");
 		system("pause");
@@ -429,35 +465,6 @@ void agregarPersona(struct persona **p){
 	system("cls");
 }
 
-void menuPersonas(){
-	
-	int opcion = 1;
-	while(opcion){
-		system("cls");
-		encabezado();
-		printf("\t\t\t\t\t MANTENIMIENTO->PERSONAS\n\n");
-		printf("\t\t\t\t {POR FAVOR ESCRIBA LA OPCION QUE DESEA}\n\n");
-		printf("\t\t\t\t\t(1)--AGREGAR\n");
-		printf("\t\t\t\t\t(2)--MODIFICAR\n");
-		printf("\t\t\t\t\t(3)--CONSULTAR\n");
-		printf("\t\t\t\t\t(4)--BORRAR\n");
-		printf("\t\t\t\t\t(0)--ATRAS\n\n\t\t\t\t\t\t\t");
-		scanf("%i",&opcion);
-		system("cls");
-		
-		switch (opcion){
-			case 1: agregarPersona(&p);//LLAMADA A LA FUNCION agregarPersona
-				break;
-			case 2: modificarPersona(&p);//LLAMADA A LA FUNCION modificarPersona
-				break;
-			case 3: menuConsultarPersona();//LLAMADA A LA FUNCION menuConsultarPersona
-				break;
-			case 4: //LLAMADA A LA FUNCION borrarPersona
-
-				break;
-		}
-	}
-}
 
 struct persona * devPersona(struct persona *A, int pos){
 	if (pos) return devPersona(A->personaProx, --pos);
@@ -524,7 +531,7 @@ void menuVehiculos(){
 				break;
 			case 2: //LLAMADA A LA FUNCION modificarVehiculo
 				break;
-			case 3: //LLAMADA A LA FUNCION consultarVehiculo
+			case 3: consultarVehiculoPlaca(p);//LLAMADA A LA FUNCION consultarVehiculo
 				break;
 			case 4: //LLAMADA A LA FUNCION borrarVehiculo
 				break;
@@ -883,13 +890,49 @@ void consultarPersonaCedula(struct persona *p){
 	system("cls");
 }
 
-struct vehiculo *validarPlaca(struct persona *q, char placa[8], int cont){ //Retorna NULL si no consigue la placa.			   											   //sino, retorna el apuntador de esa placa
+struct vehiculo *buscarPlaca(struct persona *q, char placa[8]){ //Retorna NULL si no consigue la placa.			   		 //sino, retorna el apuntador de esa placa
 	while(q){
 		struct vehiculo *vehiculo = q->datosVehiculo;
 		while(vehiculo){
 			if (!strcmp(vehiculo->placa, placa)) return vehiculo;
 			vehiculo = vehiculo->vehiculoProx;
+			printf("\nciclo2\n");
 		}
+		printf("\nciclo1\n");
 		q = q->personaProx;
 	} return NULL;
+}
+
+void consultarVehiculoPlaca(struct persona *r){
+	system("cls");
+	freeBuffer();
+	char placa[10];
+	if(!r){
+		printf("\n\n\t\tLa base de datos esta vacia. Agregue una persona al sistema primero\n\n");
+		system("pause");
+		return;
+	}	
+	struct vehiculo *aux = NULL;
+	while(!aux){
+		system("cls");
+		printf("\n\n\t\t\tIngrese la placa del vehiculo que desea buscar");
+		printf("\n\n\t\t\t(0) Para salir \n\n\t\t\t\t\t");
+		gets(placa);
+		if (!strcmp(placa,"0")) return;
+		strcpy(placa, strupr(placa));
+		aux = buscarPlaca(r, placa);
+		if(!aux){
+			system("cls");
+			printf("\n\n\t\t\t\tLA PLACA NO ESTA REGISTRADA EN EL SISTEMA\n\n");
+			system("pause");
+		}
+	}
+	printf("\n\n\t\t\t\tSE ENCONTRARON LOS SIGUIENTES DATOS\n");
+	printf("\n\n\t\t\tPlaca: %s",aux->placa);
+	printf("\n\n\t\t\tMarca: %s",aux->marca);
+	printf("\n\n\t\t\tModelo: %s",aux->modelo);
+	printf("\n\n\t\t\ta%co: %i",164,aux->annio.yy);
+	printf("\n\n\t\t\tColor: %s\n\n",aux->color);
+	system("pause");
+	system("cls");
 }
