@@ -950,3 +950,4 @@ void consultarVehiculoPlaca(struct persona *r){
 	system("pause");
 	system("cls");
 }
+
