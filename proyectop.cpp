@@ -229,7 +229,7 @@ struct infraccion * agregarInfraccion(){
 	gets(auxInfraccion->pagado);
 	strcpy(auxInfraccion->pagado,strupr(auxInfraccion->pagado));
 	
-	while ((strcmp(auxInfraccion->pagado,"SI")!=0)||(strcmp(auxInfraccion->pagado,"NO")!=0)){   //******************VALIDACION SI PAGO MULTA O NO********************
+	while ((strcmp(auxInfraccion->pagado,"SI")!=0)&&(strcmp(auxInfraccion->pagado,"NO")!=0)){   //******************VALIDACION SI PAGO MULTA O NO********************
 		printf("\n\n\t\t\t\tLa respuesta introducida no es valida\n\n");
 		printf("\n\n\t\t\t\tSolo se permiten las siguientes respuestas: 'SI' o 'NO'\n\n");
 		system("pause");
@@ -268,8 +268,22 @@ struct vehiculo * agregarVehiculo(){
 	printf("\n\t\t\tIngrese el modelo del vehiculo: "); 
 	gets(auxVehiculo->modelo);
 	strcpy(auxVehiculo->modelo,strupr(auxVehiculo->modelo));
+	
 	printf("\n\t\t\tIngrese el a%co (yyyy): ",164); 
 	scanf("%i",&auxVehiculo->annio.yy);
+	
+	while(auxVehiculo->annio.yy>2020){                              //**********VALIDACION DEL AÃ‘O DE REGISTRO INFRACCION************************
+		system("cls");
+		printf("\n\n\t\t\t\tIngrese un valor valido (hasta 2020)\n\n");
+		system("pause");
+		system("cls");
+		printf("\n\n\t\t\tIngrese la placa: %s",auxVehiculo->placa);
+		printf("\n\n\t\t\tIngrese la marca del vehiculo: %s",auxVehiculo->marca);
+		printf("\n\n\t\t\tIngrese el modelo del vehiculo: %s",auxVehiculo->modelo);
+		printf("\n\t\t\tIngrese el a%co (yyyy): ",164); 
+		scanf("%i",&auxVehiculo->annio.yy);
+	}
+	
 	freeBuffer();
 	printf("\n\t\t\tIngrese el color del vehiculo: "); 
 	gets(auxVehiculo->color);
