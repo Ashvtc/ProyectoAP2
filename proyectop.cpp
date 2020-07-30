@@ -137,6 +137,12 @@ void llamadaEliminarInfraccion();
 
 void funcionDosDosUno ();
 
+void mostrarpersona(struct persona *persona);
+
+void mostrarVehiculos(struct vehiculo *vehiculos);
+
+void mostrarInfracciones(struct infraccion *datosInfraccion);
+
 int main(){         //*************************FUNCION PRINCIPAL***************************
 
 	int opcion = 1;	
@@ -1375,6 +1381,7 @@ void consultarPersonaCedula(int cedula){
 			system("pause");
 		}
 	}
+	printf("\n\n\t   Datos del titular:");
 	printf("\n\n\t\t\t- Nombre: %s",aux->nombre);
 	printf("\n\n\t\t\t- Apellidos: %s",aux->apellidos);
 	printf("\n\n\t\t\t- Cedula: %i",aux->cedula);
@@ -1382,7 +1389,6 @@ void consultarPersonaCedula(int cedula){
 	printf("\n\n\t\t\t- Lugar de nacimiento: %s",aux->place.ciudad);
 	printf("\n\n\t\t\t- Direccion actual de residencia: %s\n\n",aux->place.direccion);
 	system("pause");
-	system("cls");
 }
 
 
@@ -1660,18 +1666,67 @@ void funcionDosDosUno (){
 			system("pause");
 		}
 	}
-	printf("\n\n\t   Datos del titular:");
 	consultarPersonaCedula(cedula);
 	struct vehiculo *vehiculos=persona->datosVehiculo;
-	printf("\n\t   Vehiculos:");
+	printf("\n\t   Vehiculos:\n");
 	for (i=1; vehiculos; i++){
-		printf("\n\t\tVehiculo %i",i);
-		if (!strcmp(vehiculos->datosInfraccion->pagado,"SI"))  deuda+=vehiculos->datosInfraccion->monto;
-		vehiculos=vehiculos->vehiculoProx;
+		printf("\n\t\tVehiculo %i\n",i);
+		printf("\n\t\tPlaca: %s",vehiculos->placa);
+		printf("\n\t\tMarca: %s",vehiculos->marca);
+		printf("\n\t\tModelo: %s",vehiculos->modelo);
+		printf("\n\t\tA%co: %i\n",164,vehiculos->annio.yy);
+		while(vehiculos->datosInfraccion){
+			if (!strcmp(vehiculos->datosInfraccion->pagado,"NO"))  deuda+=vehiculos->datosInfraccion->monto;
+			vehiculos->datosInfraccion = vehiculos->datosInfraccion->infraccionProx;
+		} vehiculos=vehiculos->vehiculoProx;
 	}
 	i--;
 	if (!i) printf("\n\n\t\t\t\tNO POSEE VEHICULOS");
-	if (deuda) printf("\n\n\t\t\t\tPosee una deuda de %i Bs",deuda);
+	else printf("\n\n\t\tPosee un totoal de %i vehiculos",i);
+	if (deuda) printf("\n\t\tPosee una deuda de %i Bs\n",deuda);
 	else printf("\n\n\t\t\t\tNo posee deuda");
+	system("pause");
 }
 ////////////////////////////////////////////////////////CONSULTAS DE ENUNCIADOS/////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////FUNCIONES MOSTRAR////////////////////////////////////////////////////////////////
+
+void mostrarpersona(struct persona *persona){
+	consultarPersonaCedula(persona->cedula);
+	struct vehiculo *vehiculos=persona->datosVehiculo;
+	mostrarVehiculos(&*vehiculos);
+}
+
+void mostrarVehiculos(struct vehiculo *vehiculos){
+	int i;
+	while (vehiculos){
+		printf("\n\t   Vehiculos:\n");
+		for (i=1; vehiculos; i++){
+			printf("\n\n\t   Datos del vehiculo:");
+			printf("\n\n\t\t\t- Vehiculo %i\n",i);
+			printf("\n\n\t\t\t- Placa: %s",vehiculos->placa);
+			printf("\n\n\t\t\t- Marca: %s",vehiculos->marca);
+			printf("\n\n\t\t\t- Modelo: %s",vehiculos->modelo);
+			printf("\n\n\t\t\t- A%co: %i\n",164,vehiculos->annio.yy);
+			if (vehiculos->datosInfraccion) mostrarInfracciones(vehiculos->datosInfraccion);
+			else printf("Este vehiculo no posee infracciones");
+			vehiculos=vehiculos->vehiculoProx;
+		}
+		i--;
+	}
+}
+
+void mostrarInfracciones(struct infraccion *datosInfraccion){
+	int i;
+	for (i=1; datosInfraccion; i++){
+		printf("\n\n\t\t\tDatos de la infraccion");
+		printf("\n\n\t\t\t - Numero Infraccion: %i",datosInfraccion->numero);
+		printf("\n\n\t\t\t - Tipo de infraccion: %s",datosInfraccion->tipo);
+		printf("\n\n\t\t\t - Fecha de infraccion: %i/%i/%i",datosInfraccion->fechaInfraccion.dd,datosInfraccion->fechaInfraccion.mm,datosInfraccion->fechaInfraccion.yy);
+		printf("\n\n\t\t\t - Pagado: %s\n\n\t\t\t\t\t",datosInfraccion->pagado);
+		datosInfraccion=datosInfraccion->infraccionProx;
+	}
+	i--;
+}
+
+///////////////////////////////////////////////////////////FUNCIONES MOSTRAR////////////////////////////////////////////////////////////////
