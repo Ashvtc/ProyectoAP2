@@ -311,6 +311,10 @@ void llamadaEliminarInfraccion();
 
 void funcionDosDosUno ();
 
+void funcionDosDosCuatro(struct persona *p);
+
+void funcionDosDosCinco(struct persona *p);
+
 void mostrarPersona(struct persona *persona);
 
 void mostrarVehiculos(struct vehiculo *vehiculos);
@@ -329,8 +333,6 @@ void funcionDosDosTres(struct persona *p);
 
 void funcionDosDosDos();
 
-void funcionDosDosCuatro();
-
 void funcionDosTres();
 
 void funcionesDosCuatro(struct persona *q, int num);
@@ -339,7 +341,7 @@ void ordenarBurbujaNumeroMulta(struct infraccion **f);
 
 void ordenarPersonaCedula(struct persona **p, int btn);
 
-void ordenarBurbujaIFecha(struct infraccion *i);
+void ordenarBurbujaIFecha(struct infraccion **i);
 
 int main(){         //*************************FUNCION PRINCIPAL***************************
 	llenarData(&p);
@@ -505,21 +507,20 @@ void menuConsultasdos(){
 		printf("\t\t           ORDENADAS POR FECHA ASCENDENTE. PRIMERO LAS QUE NO HAN SIDO PAGADAS\n"); 
 		printf("\t\t           Y LUEGO LAS YA CANCELADAS\n\n"); 
 		printf("\t\t(5)--2.2.5 DADO UN TIPO DE INFRACCION MOSTRAR LAS MULTAS COMPLETAS QUE HA TENIDO\n");
-		printf("\t\t           AGRUPADAS POR VEHICULO (PLACA, MARCA, A%cO) Y ORDENAR POR FECHA DE\n",164); 
-		printf("\t\t           INFRACCION (ASCENDENTE)\n\n"); 
+		printf("\t\t           AGRUPADAS POR: VEHICULO (PLACA, MARCA, A%cO)\n",164); 
+		printf("\t\t                          FECHA DE INFRACCION (ASCENDENTE)\n\n"); 
 		printf("\t\t(0)--ATRAS\n\n\t\t\t\t\t\t\t");
 		scanf("%i",&opcion);
 		system("cls");
 		switch (opcion){
 			case 1: funcionDosDosUno (); //LLAMADA A LA FUNCION 2.2.1 PARA BUSCAR LAS DEUDAS
 				break;
-			case 2: funcionDosDosDos ();//LLAMADA A LA FUNCION 2.2.2
+			case 2: funcionDosDosDos ();//LLAMADA A LA FUNCION 
 				break;
-			case 3: funcionDosDosTres(p);//LLAMADA A LA FUNCION 2.2.3
+			case 3: funcionDosDosTres(p);//LLAMADA A LA FUNCION consultaPorPlaca
 				break;
-			case 4: funcionDosDosCuatro();//LLAMADA A LA FUNCION 2.2.4
+			case 4: funcionDosDosCuatro(p);//LLAMADA A LA FUNCION 2.2.4
 				break;
-			//case 5: funcionDosDosCinco();//LLAMADA A LA FUNCION 2.2.5
 		}
 	}
 }
@@ -573,12 +574,12 @@ void menuConsultas(){
 		scanf("%i",&opcion);
 		system("cls");
 		switch (opcion){
-			case 1: consultarPersonaNombre(p);//LLAMADA A LA FUNCION consultarPorPersonaNombre
+			case 1: consultarPersonaNombre(p);//LLAMADA A LA FUNCION consultaPorPersona
 				break;
 			case 2: //LLAMADA A LA FUNCION menu2.2
 				menuConsultasdos();
 				break;
-			case 3: funcionDosTres();//LLAMADA A LA FUNCION 2.3
+			case 3: funcionDosTres();//LLAMADA A LA FUNCION consultaPorPlaca
 				break;
 			case 4: //LLAMADA A LA FUNCION menu2.4
 				menuConsultascuatro();
@@ -2007,11 +2008,13 @@ void funcionDosDosTres(struct persona *p){
 		system("pause");
 }
 
-void funcionDosDosCuatro(){ //Dada una placa mostrar todas las multas completas que ha tenido ordenadas por fecha ascendente. Primero las que no han sido pagadas y luego las ya canceladas.
+void funcionDosDosCuatro(struct persona *p){ //Dada una placa mostrar todas las multas completas que ha tenido ordenadas por fecha ascendente. Primero las que no han sido pagadas y luego las ya canceladas.
 	int cedula;
+	char placa[8];
 	struct persona *persona=NULL;
 	struct infraccion *infraccion;
-	struct vehiculo *vehiculos;
+	struct vehiculo *vehiculo=NULL;
+	freeBuffer();
 	if (!p){
 		printf("\n\n\t\tLa base de datos esta vacia. Agregue una persona al sistema primero\n\n");
 		system("pause");
@@ -2027,48 +2030,109 @@ void funcionDosDosCuatro(){ //Dada una placa mostrar todas las multas completas 
 			system("pause");
 		}
 	}
-	printf("\n\t\tTitular: %s %s",persona->nombre, persona->apellidos);
-	vehiculos=persona->datosVehiculo;
-	consultarVehiculoPlaca(persona);
-	while (vehiculos){
-		printf("\n\n\n\t\tVehiculo %s",vehiculos->placa);
-		infraccion = vehiculos->datosInfraccion;
-		for(int i=0; infraccion ; i++){
-			ordenarBurbujaIFecha(infraccion);
-			if (!strcmp(infraccion->pagado,"NO")) {
-				printf("\n\n\t\tMultas sin pagar:");
-				printf("\n\n\t\t - Infraccion %i\n",i);
-				printf("\n\t\t - Fecha: %i/%i/%i",infraccion->fechaInfraccion.dd,infraccion->fechaInfraccion.mm,infraccion->fechaInfraccion.yy);
-				printf("\n\t\t - Numero: %i",infraccion->numero);
-				printf("\n\t\t - Tipo: %s",infraccion->tipo);
-				printf("\n\t\t - Monto: %i",infraccion->monto);
-				printf("\n\t\t - Pagada: %s",infraccion->pagado);
+	printf("\n\t\tTitular: %s %s\n\n",persona->nombre, persona->apellidos);
+	system("pause");
+	while (!vehiculo){
+		system("cls");
+		printf("\n\n\t\t\tIngrese la placa: ");
+		gets(placa);
+		strcpy(placa,strupr(placa));
+		if (!strcmp(placa,"0")) return;
+		vehiculo=buscarPlaca(p, placa);
+		if (!vehiculo){
+			system("cls");
+			printf("\n\n\t\t\t\tLA PLACA NO ESTA REGISTRADA EN EL SISTEMA\n\n");
+			system("pause");
+		}
+	}
+	system("cls");
+	infraccion = vehiculo->datosInfraccion;
+	//ordenar por fecha de infraccion
+	printf("\n\n\t\tVehiculo %s\n",placa);
+	if(!infraccion)printf("\n\n\t\tNO POSEE INFRACCIONES\n\n");
+	else{
+		for (int i = 1; infraccion; i++) {
+			if(!strcmp(infraccion->pagado,"NO")){
+				printf("\n\n\t\t\t\t Multas no pagadas");
+				printf("\n\n\t\t\t\t Infraccion %i",i);
+				printf("\n\n\t\tNumero: %i",infraccion->numero);
+				printf("\n\t\tTipo: %s",infraccion->tipo);
+				printf("\n\t\tFecha: %i/%i/%i",infraccion->fechaInfraccion.dd,infraccion->fechaInfraccion.mm,infraccion->fechaInfraccion.yy);
+				printf("\n\t\tMonto: %i",infraccion->monto);
+				printf("\n\t\tPagado: %s",infraccion->pagado);
 			}
 			infraccion = infraccion->infraccionProx;
 		}
-		infraccion = vehiculos->datosInfraccion;
-		for(int i=0; infraccion ; i++){
-			ordenarBurbujaIFecha(infraccion);
-			if (!strcmp(infraccion->pagado,"SI")) {
-				printf("\n\n\t\tMultas pagadas:");
-				printf("\n\n\t\t - Infraccion %i\n",i);
-				printf("\n\t\t - Fecha: %i/%i/%i",infraccion->fechaInfraccion.dd,infraccion->fechaInfraccion.mm,infraccion->fechaInfraccion.yy);
-				printf("\n\t\t - Numero: %i",infraccion->numero);
-				printf("\n\t\t - Tipo: %s",infraccion->tipo);
-				printf("\n\t\t - Monto: %i",infraccion->monto);
-				printf("\n\t\t - Pagada: %s",infraccion->pagado);
+		infraccion = vehiculo->datosInfraccion;
+		//ordenar por fecha de infraccion
+		for (int i = 1; infraccion; i++) {
+			if(!strcmp(infraccion->pagado,"SI")){
+				printf("\n\n\t\t\t\t Multas pagadas");
+				printf("\n\n\t\t\t\t Infraccion %i",i);
+				printf("\n\n\t\tNumero: %i",infraccion->numero);
+				printf("\n\t\tTipo: %s",infraccion->tipo);
+				printf("\n\t\tFecha: %i/%i/%i",infraccion->fechaInfraccion.dd,infraccion->fechaInfraccion.mm,infraccion->fechaInfraccion.yy);
+				printf("\n\t\tMonto: %i",infraccion->monto);
+				printf("\n\t\tPagado: %s",infraccion->pagado);
 			}
-			
 			infraccion = infraccion->infraccionProx;
 		}
-		vehiculos=vehiculos->vehiculoProx;
+	}
+	system("pause");	
+}
+
+void funcionDosDosCinco(struct persona *p){ //Dado un tipo de infracción mostrar todas las multas completas que ha tenido agrupadas por vehículo (placa, marca, año) ordenadas por fecha de infracción (ascendente).
+	int cedula;
+	char tipo[40];
+	struct persona *persona=NULL;
+	struct infraccion *infraccion;
+	struct vehiculo *vehiculo;
+	freeBuffer();
+	if (!p){
+		printf("\n\n\t\tLa base de datos esta vacia. Agregue una persona al sistema primero\n\n");
+		system("pause");
+		return;
 	}	
+	while (!persona){
+		printf("Ingrese la cedula:");
+		scanf("%i",&cedula);
+		persona=buscarCedula(p,cedula);
+		if (!persona){
+			system("cls");
+			printf("\n\n\t\t\t\tLA CEDULA NO ESTA REGISTRADA EN EL SISTEMA\n\n");
+			system("pause");
+		}
+	}
+	printf("\n\t\tTitular: %s %s\n\n",persona->nombre, persona->apellidos);
+	system("pause");
+	printf("\n\n\t\tIngrese el tipo de infraccion: ");
+	gets(tipo);
+	strcpy(tipo,strupr(tipo));
+	while(persona){
+		vehiculo = persona->datosVehiculo;
+		while(vehiculo){
+			infraccion=vehiculo->datosInfraccion;
+			//ordenar por fecha de infraccion
+			while (infraccion){
+				if ((strcmp(infraccion->tipo,tipo))=0) {
+					printf("\n\n\t\t\tDatos del vehiculo");
+					printf("\n\n\t\t\t  - Placa: %s",vehiculo->placa);
+					printf("\n\n\t\t\t  - Marca: %s",vehiculo->marca);
+					printf("\n\n\t\t\t  - Modelo: %s",vehiculo->modelo);
+					printf("\n\n\t\t\t  - Color: %s",vehiculo->color);
+					printf("\n\n\t\t\t  - A%co: %i\n\n\t\t\t\t\t\t",164,vehiculo->annio.yy);
+					printf("\n\n\t\t\tDatos de la infraccion");
+					printf("\n\n\t\t\t - Numero Infraccion: %i",infraccion->numero);
+					printf("\n\n\t\t\t - Tipo de infraccion: %s",infraccion->tipo);
+					printf("\n\n\t\t\t - Fecha de infraccion: %i/%i/%i",infraccion->fechaInfraccion.dd,infraccion->fechaInfraccion.mm,infraccion->fechaInfraccion.yy);
+					printf("\n\n\t\t\t - Pagado: %s\n\n\t\t\t\t\t",infraccion->pagado);
+				}	
+				infraccion=infraccion->infraccionProx;
+			}	
+		}
+	}
+	system("pause");		
 }
-
-void funcionDosDosCinco(){ //Dado un tipo de infracción mostrar todas las multas completas que ha tenido agrupadas por vehículo (placa, marca, año) ordenadas por fecha de infracción (ascendente).
-	
-}
-
 
 void funcionDosTres(){
 	int pagadas=0, impagadas=0;
@@ -2338,21 +2402,23 @@ void ordenarBurbujaIFecha(struct infraccion **i){    //FUNCION PARA ORDENAR LAS 
 	while (cambio){
 		cambio = 0;
 		aux = *i;
-		fecha=(((((aux->fechaInfraccion.yy)*100)+(aux->fechaInfraccion.mm))*100)+(aux->fechaInfraccion.dd));
-		fecha2=(((((aux->infraccionProx->fechaInfraccion.yy)*100)+(aux->infraccionProx->fechaInfraccion.mm))*100)+(aux->infraccionProx->fechaInfraccion.dd));
+		fecha=((aux->fechaInfraccion.yy)*100)+(aux->fechaInfraccion.mm);
+		fecha=(fecha*100)+(aux->fechaInfraccion.dd);
+		fecha2=((aux->infraccionProx->fechaInfraccion.yy)*100)+(aux->infraccionProx->fechaInfraccion.mm);
+		fecha2=(fecha*100)+(aux->infraccionProx->fechaInfraccion.dd);
 		while(aux->infraccionProx){
 			if (fecha < fecha2){
 				cambio++;
+				swapStr(aux->tipo,aux->infraccionProx->tipo); 
+				swapStr(aux->pagado,aux->infraccionProx->pagado); 
+				swapInt(&aux->numero,&aux->infraccionProx->numero);
+				swapInt(&aux->monto,&aux->infraccionProx->monto);
 				swapInt(&aux->fechaInfraccion.dd,&aux->infraccionProx->fechaInfraccion.dd);
 				swapInt(&aux->fechaInfraccion.mm,&aux->infraccionProx->fechaInfraccion.mm);
 				swapInt(&aux->fechaInfraccion.yy,&aux->infraccionProx->fechaInfraccion.yy);
-				swapInt(&aux->numero,&aux->infraccionProx->numero);
-				swapInt(&aux->monto,&aux->infraccionProx->monto);
-				swapStr(aux->pagado,aux->infraccionProx->pagado);
 			}
 			aux=aux->infraccionProx;
 		}
 	}
 }
-
 ///////////////////////////////////////////////////////////FUNCIONES ORDENAR////////////////////////////////////////////////////////////////
