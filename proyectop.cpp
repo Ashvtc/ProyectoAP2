@@ -1354,6 +1354,16 @@ struct vehiculo *buscarPlaca(struct persona *q, char placa[8]){ //Retorna NULL s
 	} return NULL;
 }
 
+struct vehiculo *buscarPlaca2(struct persona *q, char placa[8]){ //Retorna NULL si no consigue la placa.			   	   //sino, retorna el apuntador de esa placa
+	struct vehiculo *vehiculo = q->datosVehiculo;
+	while(vehiculo){
+		if (!strcmp(placa,vehiculo->placa)) return vehiculo;
+		vehiculo=vehiculo->vehiculoProx;
+	} return NULL;
+}
+	
+	
+
 struct persona * buscarCedula(struct persona *r, int cedula){ //Retorna NULL si no consigue la cedula.		  //sino, retorna el apuntador de esa placa
 	while(r){
 		if(r->cedula == cedula) return r;
@@ -2035,11 +2045,12 @@ void funcionDosDosCuatro(struct persona *p){ //Dada una placa mostrar todas las 
 	system("pause");
 	while (!vehiculo){
 		system("cls");
+		freeBuffer();
 		printf("\n\n\t\t\tIngrese la placa: ");
 		gets(placa);
 		strcpy(placa,strupr(placa));
 		if (!strcmp(placa,"0")) return;
-		vehiculo=buscarPlaca(p, placa);
+		vehiculo=buscarPlaca2(persona, placa);
 		if (!vehiculo){
 			system("cls");
 			printf("\n\n\t\t\t\tLA PLACA NO ESTA REGISTRADA EN EL SISTEMA\n\n");
