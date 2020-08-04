@@ -2039,7 +2039,7 @@ void funcionDosDosCuatro(struct persona *p){ //Dada una placa mostrar todas las 
 		gets(placa);
 		strcpy(placa,strupr(placa));
 		if (!strcmp(placa,"0")) return;
-		vehiculo=buscarPlaca(persona, placa);
+		vehiculo=buscarPlaca(p, placa);
 		if (!vehiculo){
 			system("cls");
 			printf("\n\n\t\t\t\tLA PLACA NO ESTA REGISTRADA EN EL SISTEMA\n\n");
@@ -2108,11 +2108,11 @@ void funcionDosDosCinco(struct persona *p){ //Dado un tipo de infracción mostra
 	printf("\n\n\t\tIngrese el tipo de infraccion: ");
 	gets(tipo);
 	strcpy(tipo,strupr(tipo));
-	printf("t %s",tipo);
+	printf("t ",tipo);
 	vehiculo = persona->datosVehiculo;
 		while(vehiculo){
 			infraccion=vehiculo->datosInfraccion;
-			//ordenar por fecha de infraccion
+			ordenarBurbujaIFecha(&infraccion);//ordenar por fecha de infraccion
 			while (infraccion){
 				printf("infraccion %s",infraccion->tipo);
 				if ((!strcmp(tipo,infraccion->tipo))==0) {
@@ -2402,16 +2402,12 @@ void ordenarBurbujaIFecha(struct infraccion **i){    //FUNCION PARA ORDENAR LAS 
 	struct infraccion *aux;
 	int fecha,fecha2,cambio = 1;
 	while (cambio){
-		printf("entra");
 		cambio = 0;
 		aux = *i;
 		fecha=(((((aux->fechaInfraccion.yy)*100)+(aux->fechaInfraccion.mm))*100)+(aux->fechaInfraccion.dd));
 		fecha2=(((((aux->infraccionProx->fechaInfraccion.yy)*100)+(aux->infraccionProx->fechaInfraccion.mm))*100)+(aux->infraccionProx->fechaInfraccion.dd));
 		while(aux->infraccionProx){
-			printf("\nfecha %i",fecha);
-			printf("\nfecha2 %i",fecha2);
-			if (fecha < fecha2){
-				printf("\nes menor");
+			if (fecha > fecha2){
 				cambio++;
 				swapStr(aux->tipo,aux->infraccionProx->tipo); 
 				swapStr(aux->pagado,aux->infraccionProx->pagado); 
