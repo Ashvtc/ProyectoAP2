@@ -2114,7 +2114,7 @@ void funcionDosDosCinco(struct persona *p){ //Dado un tipo de infracción mostra
 			infraccion=vehiculo->datosInfraccion;
 			//ordenar por fecha de infraccion
 			while (infraccion){
-				if ((strcmp(infraccion->tipo,tipo))=0) {
+				if ((strcmp(infraccion->tipo,tipo))==0) {
 					printf("\n\n\t\t\tDatos del vehiculo");
 					printf("\n\n\t\t\t  - Placa: %s",vehiculo->placa);
 					printf("\n\n\t\t\t  - Marca: %s",vehiculo->marca);
