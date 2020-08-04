@@ -2105,17 +2105,16 @@ void funcionDosDosCinco(struct persona *p){ //Dado un tipo de infracción mostra
 		}
 	}
 	printf("\n\t\tTitular: %s %s\n\n",persona->nombre, persona->apellidos);
+	freeBuffer();
 	printf("\n\n\t\tIngrese el tipo de infraccion: ");
 	gets(tipo);
 	strcpy(tipo,strupr(tipo));
-	printf("t ",tipo);
 	vehiculo = persona->datosVehiculo;
-		while(vehiculo){
+		while(vehiculo->vehiculoProx){
 			infraccion=vehiculo->datosInfraccion;
 			ordenarBurbujaIFecha(&infraccion);//ordenar por fecha de infraccion
 			while (infraccion){
-				printf("infraccion %s",infraccion->tipo);
-				if ((!strcmp(tipo,infraccion->tipo))==0) {
+				if ((strcmp(tipo,infraccion->tipo))==0) {
 					printf("\n\n\t\t\tDatos del vehiculo");
 					printf("\n\n\t\t\t  - Placa: %s",vehiculo->placa);
 					printf("\n\n\t\t\t  - Marca: %s",vehiculo->marca);
@@ -2127,13 +2126,12 @@ void funcionDosDosCinco(struct persona *p){ //Dado un tipo de infracción mostra
 					printf("\n\n\t\t\t - Tipo de infraccion: %s",infraccion->tipo);
 					printf("\n\n\t\t\t - Fecha de infraccion: %i/%i/%i",infraccion->fechaInfraccion.dd,infraccion->fechaInfraccion.mm,infraccion->fechaInfraccion.yy);
 					printf("\n\n\t\t\t - Pagado: %s\n\n\t\t\t\t\t",infraccion->pagado);
-					system("pause");
 				}	
 				infraccion=infraccion->infraccionProx;
 			}
 			vehiculo=vehiculo->vehiculoProx;
 		}
-	system("pause");		
+	system("pause");
 }
 
 void funcionDosTres(){
