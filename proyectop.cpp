@@ -1,7 +1,7 @@
-/*Integrantes: Jose Alayon C.I 26.546.441
-               Ashly Colmenares C.I 28.052.693
-	       Javier Rojas C.I 28.472.023
-	       Alejandro Sangiacomo C.I 26.763.470 */
+  /*Integrantes: Jose Alayon C.I 26.546.441
+            	Ashly Colmenares C.I 28.052.693
+	    		Javier Rojas C.I 28.472.023
+	       		Alejandro Sangiacomo C.I 26.763.470 */
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -2222,7 +2222,7 @@ void funcionDosDosTres(struct persona *p){                                 //FUN
 		system("pause");
 }
 
-void funcionDosDosCuatro(struct persona *p){                                  //FUNCION PARA LA OPCION 2.2.4 DEL MENU
+void funcionDosDosCuatro(struct persona *p){ //FUNCION DE LA OPCION 2.2.4 DEL MENU
 	int cedula;
 	char placa[8];
 	struct persona *persona=NULL;
@@ -2235,10 +2235,8 @@ void funcionDosDosCuatro(struct persona *p){                                  //
 		return;
 	}	
 	while (!persona){
-		printf("\n\n\t\t\tIngrese el numero de cedula que desea buscar");
-		printf("\n\n\t\t\t(0) Salir\n\n\t\t\t\t");
+		printf("Ingrese la cedula:");
 		scanf("%i",&cedula);
-		if(!cedula)return;
 		persona=buscarCedula(p,cedula);
 		if (!persona){
 			system("cls");
@@ -2251,7 +2249,7 @@ void funcionDosDosCuatro(struct persona *p){                                  //
 	while (!vehiculo){
 		system("cls");
 		freeBuffer();
-		printf("\n\n\t\t\t(0) Salir\n\n\t\t\t\t");
+		printf("\n\n\t\t\tIngrese la placa: ");
 		gets(placa);
 		strcpy(placa,strupr(placa));
 		if (!strcmp(placa,"0")) return;
@@ -2298,7 +2296,7 @@ void funcionDosDosCuatro(struct persona *p){                                  //
 	system("pause");	
 }
 
-void funcionDosDosCinco(struct persona *p){                                  //FUNCION PARA LA OPCION 2.2.5 DEL MENU
+void funcionDosDosCinco(struct persona *p){ //FUNCION OPCION 2.2.5 DEL MENU
 	int cedula;
 	char tipo[40];
 	struct persona *persona=NULL;
@@ -2311,10 +2309,8 @@ void funcionDosDosCinco(struct persona *p){                                  //F
 		return;
 	}	
 	while (!persona){
-				printf("\n\tIngrese la cedula (Ya debe estar registrado en el sistema)");
-		printf("\n\n\t\t\t(0) Salir\n\n\t\t\t\t");
+		printf("Ingrese la cedula:");
 		scanf("%i",&cedula);
-		if (!cedula) return;
 		persona=buscarCedula(p,cedula);
 		if (!persona){
 			system("cls");
