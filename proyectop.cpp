@@ -1,3 +1,7 @@
+/*Integrantes: Jose Alayon C.I 26.546.441
+               Ashly Colmenares C.I 28.052.693
+	       Javier Rojas C.I 28.472.023
+	       Alejandro Sangiacomo C.I 26.763.470 */
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
