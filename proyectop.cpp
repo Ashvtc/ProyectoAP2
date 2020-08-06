@@ -1,4 +1,4 @@
-  /*Integrantes: Jose Alayon C.I 26.546.441
+   /*Integrantes: Jose Alayon C.I 26.546.441
             	Ashly Colmenares C.I 28.052.693
 	    		Javier Rojas C.I 28.472.023
 	       		Alejandro Sangiacomo C.I 26.763.470 */
@@ -528,8 +528,8 @@ void menuConsultasdos(){   //MENU OPERACIONES Y CONSULTAS - CONSULTAS (OPCION 2.
 		printf("\t\t           ORDENADAS POR FECHA ASCENDENTE. PRIMERO LAS QUE NO HAN SIDO PAGADAS\n"); 
 		printf("\t\t           Y LUEGO LAS YA CANCELADAS\n\n"); 
 		printf("\t\t(5)--2.2.5 DADO UN TIPO DE INFRACCION MOSTRAR LAS MULTAS COMPLETAS QUE HA TENIDO\n");
-		printf("\t\t           AGRUPADAS POR: VEHICULO (PLACA, MARCA, A%cO)\n",164); 
-		printf("\t\t                          FECHA DE INFRACCION (ASCENDENTE)\n\n"); 
+		printf("\t\t           AGRUPADAS POR: VEHICULO (PLACA, MARCA, A%cO) Y ORDENAR POR FECHA DE\n",164); 
+		printf("\t\t           INFRACCION (ASCENDENTE)\n\n"); 
 		printf("\t\t(0)--ATRAS\n\n\t\t\t\t\t\t\t");
 		printf("\n\t\t\t\t\t\tOpcion: "); 
 		scanf("%i",&opcion);
