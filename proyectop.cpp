@@ -1,4 +1,4 @@
-   /*Integrantes: Jose Alayon C.I 26.546.441
+ /*Integrantes: Jose Alayon C.I 26.546.441
             	Ashly Colmenares C.I 28.052.693
 	    		Javier Rojas C.I 28.472.023
 	       		Alejandro Sangiacomo C.I 26.763.470 */
@@ -51,7 +51,7 @@ void guardarData(struct persona *p){
 	char linea[20];
 	struct vehiculo *v;
 	struct infraccion *f;
-	fichero = fopen("dataproyecto.txt", "w"); //fputs("lo que se quiere ir en el fichero", variable tipo fichero);
+	fichero = fopen("dataproyecto.txt", "w"); 
 	while(p){
 		fputs("PERSONA\n",fichero);
 		fputs(p->nombre,fichero);
@@ -646,13 +646,12 @@ void menuOperacionesConsultas(){  //MENU OPERACIONES Y CONSULTAS
 void menuConsultarPersona(){ //MENU MANTENIMIENTO - PERSONAS - CONSULTAR
 	int opcion = 1;
 	while(opcion){
-		system("cls");
 		encabezado();
 		printf("\t\t\t\t  ------------------------------------\n");
 		printf("\t\t\t\t   MANTENIMIENTO->PERSONAS->CONSULTAR\n");
 		printf("\t\t\t\t  ------------------------------------\n\n");
 		printf("\t\t\t\t {POR FAVOR ESCRIBA LA OPCION QUE DESEA}\n\n");
-		printf("\t\t\t\t\t(1)--CONSULTAR POR NOMBRE\n");
+		printf("\t\t\t\t\t(1)--CONSULTAR POR NOMBRE, APELLIDO O NOMBRE COMPLETO\n");
 		printf("\t\t\t\t\t(2)--CONSULTAR POR CEDULA\n");
 		printf("\t\t\t\t\t(0)--ATRAS\n\n\t\t\t\t\t\t\t");
 		printf("\n\t\t\t\t\t\tOpcion: "); 
@@ -1161,7 +1160,7 @@ void modificarVehiculo(struct persona **p){   //FUNCION PARA MODIFICAR EN EL SIS
 		system("pause");
 		return;
 	}
-	while(respuesta==0){
+	while(strcmp(resp,"SI")!=0&&strcmp(resp,"NO")!=0){
 		while(!vehiculo){
 			printf("\n\t\t\tIngrese una placa para buscar en el sistema.");
 			printf("\n\t\t\t(0) Para salir\n\t\t\t");
@@ -1196,11 +1195,9 @@ void modificarVehiculo(struct persona **p){   //FUNCION PARA MODIFICAR EN EL SIS
 			scanf("%s",&resp);
 			strcpy(resp,strupr(resp));
 		}
-		if (strcmp(resp,"SI")==0) respuesta=1;
-		if (strcmp(resp,"NO")==0) respuesta=2;
 	}
 	freeBuffer();
-	if (respuesta==1){
+	if (!strcmp(resp,"SI")){
 		printf("\n\n\t\t\t- Placa: %s \n",vehiculo->placa);
 		printf("\n\n\t\t\tIngrese la marca del vehiculo: "); 
 		gets(vehiculo->marca);
@@ -1224,15 +1221,15 @@ void modificarVehiculo(struct persona **p){   //FUNCION PARA MODIFICAR EN EL SIS
 void modificarPersona(struct persona **p){  //FUNCION PARA MODIFICAR EN EL SISTEMA A UNA PERSONA
 	system("cls");
 	char resp[2];
-	int cedula, respuesta=0;
+	int cedula;
 	struct persona *aux;
-	
+	strcpy(resp, "  ");
 	if(!*p){ //VALIDO PARA SABER SI LA BASE DE DATOS ESTA VACIA
 		printf("\n\t\t\tLa base de datos esta vacia. Ingrese una persona al sistema para continuar\n");
 		system("pause");
 		return;
 	}
-	while(respuesta==0){
+	while(strcmp(resp,"SI")!=0&&strcmp(resp,"NO")!=0){
 		system("cls");
 		printf("\n\t\t\tIngrese una cedula para buscar en el sistema.");
 		printf("\n\t\t\t(0) Para salir\n\t\t\t");
@@ -1265,11 +1262,10 @@ void modificarPersona(struct persona **p){  //FUNCION PARA MODIFICAR EN EL SISTE
 			scanf("%s",&resp);
 			strcpy(resp,strupr(resp));
 		}
-		if (strcmp(resp,"SI")==0) respuesta=1;
-		if (strcmp(resp,"NO")==0) respuesta=2;
 	}
 	freeBuffer();
-	if (strcmp(resp,"SI")==0){
+	if (!strcmp(resp,"SI")){
+		//freeBuffer();
 		printf("\n\t\t\tIngrese el nombre (20 caracteres max): "); 
 		gets(aux->nombre);
 		while(strlen(aux->nombre)>20){                                     //******************VALIDACION DEL NOMBRE********************
@@ -1291,7 +1287,7 @@ void modificarPersona(struct persona **p){  //FUNCION PARA MODIFICAR EN EL SISTE
 			gets(aux->apellidos);
 		}
 		strcpy(aux->apellidos,strupr(aux->apellidos));
-		printf("\n\n\t\t\tCedula: %i (NO SE PUEDE MODIFICAR)",aux->cedula);
+		printf("\n\t\t\tCedula: %i (NO SE PUEDE MODIFICAR)",aux->cedula);
 	
 		printf("\n\t\t\tIngrese el dia de nacimiento: ");
 		scanf("%i",&(*aux).fechaNacimiento.dd);
@@ -1348,7 +1344,7 @@ void modificarPersona(struct persona **p){  //FUNCION PARA MODIFICAR EN EL SISTE
 		printf("\n\n\t\t\t\tDATOS GUARDADOS CON EXITO\n");	
 	}
 	system("pause");
-	freeBuffer();
+	//freeBuffer();
 	system("cls");
 }
 
@@ -1703,9 +1699,13 @@ void consultarVehiculoCedula(struct persona *r){
 	}
 }
 
-void buscarPersonaNombre(struct persona *p, char name[20]){
+void buscarPersonaNombre(struct persona *p, char name[100]){
+	char aux[100];
 	if (p){
-		if(!strcmp(name, p->nombre)){
+		strcpy(aux,p->nombre);
+		strcat(aux, " ");
+		strcat(aux,p->apellidos);
+		if(!strcmp(name, p->nombre)||!strcmp(name, p->apellidos)||!strcmp(name, aux)){
 			printf("\n\n\t\t\t- Nombre: %s",p->nombre);
 			printf("\n\n\t\t\t- Apellidos: %s",p->apellidos);
 			printf("\n\n\t\t\t- Cedula: %i",p->cedula);
@@ -1727,7 +1727,7 @@ void consultarPersonaNombre(struct persona *p){
 		system("pause");
 		return;
 	}
-	printf("\n\n\t\t\tIngrese el nombre que desea buscar");
+	printf("\n\n\t\t\tIngrese el nombre, apellido o nombre completo de la persona que desea buscar");
 	printf("\n\t\t\tDebe ser el mismo que se ingreso en el sistema (No importan las mayusculas)\n\n\t\t\t\t\t");
 	gets(nombre);
 	strcpy(nombre,strupr(nombre));
@@ -1736,6 +1736,7 @@ void consultarPersonaNombre(struct persona *p){
 	printf("\n\n\t\t\t\t    NO SE ENCONTRARON MAS DATOS\n\n");
 	system("pause");
 	system("cls");
+	printf("termino");
 }
 
 void consultarPersonaCedula(int cedula){
