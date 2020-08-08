@@ -313,9 +313,9 @@ void moverInfraccion();             //MUEVE LA INFRACCION
 
 void llamadaEliminarInfraccion();
 
-void funcionDosDosUno ();           //FUNCION DE LA OPCION 2.2.1
+void funcionDosDosUno (struct persona *p);           //FUNCION DE LA OPCION 2.2.1
 
-void funcionDosDosDos();            //FUNCION DE LA OPCION 2.2.2
+void funcionDosDosDos(struct persona *p);            //FUNCION DE LA OPCION 2.2.2
 
 void funcionDosDosTres(struct persona *p);   //FUNCION DE LA OPCION 2.2.3
 
@@ -323,7 +323,7 @@ void funcionDosDosCuatro(struct persona *p); //FUNCION DE LA OPCION 2.2.4
 
 void funcionDosDosCinco(struct persona *p);  //FUNCION DE LA OPCION 2.2.5
 
-void funcionDosTres();              //FUNCION DE LA OPCION 2.3
+void funcionDosTres(struct persona *p);              //FUNCION DE LA OPCION 2.3
 
 void funcionesDosCuatro(struct persona *q, int num); //FUNCION DE LA OPCION 2.4
 
@@ -346,6 +346,12 @@ void ordenarBurbujaNumeroMulta(struct infraccion **f);    //ORDENA POR EL METODO
 void ordenarPersonaCedula(struct persona **p, int btn);   //ORDENA POR EL METODO BURBUJA LAS PERSONAS POR SU CEDULA
 
 void ordenarBurbujaIFecha(struct infraccion **i);          //ORDENA POR EL METODO BURBUJA LAS INFRACCIONES POR SU FECHA
+
+struct infraccion *copiarInfraccion(struct infraccion *f);
+
+struct vehiculo *copiarVehiculo(struct vehiculo *v);
+
+struct persona *copiarPersona(struct persona *q);
 
 int main(){         //*************************FUNCION PRINCIPAL***************************
 	llenarData(&p);
@@ -535,9 +541,9 @@ void menuConsultasdos(){   //MENU OPERACIONES Y CONSULTAS - CONSULTAS (OPCION 2.
 		scanf("%i",&opcion);
 		system("cls");
 		switch (opcion){
-			case 1: funcionDosDosUno (); //LLAMADA A LA FUNCION 2.2.1 PARA BUSCAR LAS DEUDAS
+			case 1: funcionDosDosUno (p); //LLAMADA A LA FUNCION 2.2.1 PARA BUSCAR LAS DEUDAS
 				break;
-			case 2: funcionDosDosDos ();//LLAMADA A LA FUNCION 2.2.2
+			case 2: funcionDosDosDos (p);//LLAMADA A LA FUNCION 2.2.2
 				break;
 			case 3: funcionDosDosTres(p);//LLAMADA A LA FUNCION 2.2.3
 				break;
@@ -608,7 +614,7 @@ void menuConsultas(){    //MENU OPERACIONES Y CONSULTAS - CONSULTAS
 			case 2: //LLAMADA A LA FUNCION menu2.2
 				menuConsultasdos();
 				break;
-			case 3: funcionDosTres();//LLAMADA A LA FUNCION consultaPorPlaca
+			case 3: funcionDosTres(p);//LLAMADA A LA FUNCION consultaPorPlaca
 				break;
 			case 4: //LLAMADA A LA FUNCION menu2.4
 				menuConsultascuatro();
@@ -662,7 +668,9 @@ void menuConsultarPersona(){ //MENU MANTENIMIENTO - PERSONAS - CONSULTAR
 			case 1: consultarPersonaNombre(p);//LLAMADA A LA FUNCION agregarPersona
 				break;
 			case 2: consultarPersonaCedula(0);//LLAMADA A LA FUNCION modificarPersona
+					printf("\n\n");
 					system("pause");
+					system("cls");
 				break;
 		}
 	}
@@ -1144,6 +1152,7 @@ void llamadaAgregarInfraccion(struct persona **p){  //FUNCION PARA VERIFICAR ANT
 		guardarData(*p);
 	}
 }
+
 ///////////////////////////////////////////////////////////FUNCIONES AGREGAR///////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////FUNCIONES MODIFICAR/MOVER///////////////////////////////////////////////////////////////
@@ -1511,8 +1520,6 @@ struct vehiculo *buscarPlaca2(struct persona *q, char placa[8]){ //Retorna NULL 
 	} return NULL;
 }
 	
-	
-
 struct persona * buscarCedula(struct persona *r, int cedula){ //Retorna NULL si no consigue la cedula.		  //sino, retorna el apuntador de esa placa
 	while(r){
 		if(r->cedula == cedula) return r;
@@ -1736,7 +1743,6 @@ void consultarPersonaNombre(struct persona *p){
 	printf("\n\n\t\t\t\t    NO SE ENCONTRARON MAS DATOS\n\n");
 	system("pause");
 	system("cls");
-	printf("termino");
 }
 
 void consultarPersonaCedula(int cedula){
@@ -2073,7 +2079,7 @@ void llamadaEliminarInfraccion(){ //FUNCION PARA VERIFICAR ANTES DE ELIMINAR UNA
 
 ////////////////////////////////////////////////////////CONSULTAS DE ENUNCIADOS/////////////////////////////////////////////////////////////
 
-void funcionDosDosUno (){                                 //FUNCION PARA LA OPCION 2.2.1 DEL MENU
+void funcionDosDosUno (struct persona *p){                                 //FUNCION PARA LA OPCION 2.2.1 DEL MENU
 	int j=0,i=1,cedula, deuda=0;
 	struct persona *persona=NULL;
 	if (!p){
@@ -2122,7 +2128,7 @@ void funcionDosDosUno (){                                 //FUNCION PARA LA OPCI
 	system("pause");
 }
 
-void funcionDosDosDos(){                                 //FUNCION PARA LA OPCION 2.2.2 DEL MENU
+void funcionDosDosDos(struct persona *p){                                 //FUNCION PARA LA OPCION 2.2.2 DEL MENU
 	int i,cedula, deuda=0, pagado=0;
 	struct persona *persona=NULL;
 	struct vehiculo *vehiculos;
@@ -2195,14 +2201,14 @@ void funcionDosDosTres(struct persona *p){                                 //FUN
 	}
 	printf("\n\t\tTitular: %s %s",persona->nombre, persona->apellidos);
 	
-	vehiculos=persona->datosVehiculo;
+	vehiculos = copiarVehiculo(persona->datosVehiculo);
 	ordenarBurbujaPlaca(&vehiculos);
 	printf("\n\n\t\tMultas sin pagar:");
 	while (vehiculos){
 		printf("\n\n\n\t\tVehiculo %s",vehiculos->placa);
 		
 		infraccion = vehiculos->datosInfraccion;
-		for(int i=0; infraccion ; i++){
+		for(int i=1; infraccion ; i++){
 			
 			if (!strcmp(infraccion->pagado,"NO")) {
 				printf("\n\n\t\t   Infraccion %i\n",i);
@@ -2236,8 +2242,10 @@ void funcionDosDosCuatro(struct persona *p){ //FUNCION DE LA OPCION 2.2.4 DEL ME
 		return;
 	}	
 	while (!persona){
-		printf("Ingrese la cedula:");
+		printf("\n\n\t\t\tIngrese el numero de cedula que desea buscar");
+		printf("\n\n\t\t\t(0) Salir\n\n\t\t\t\t");
 		scanf("%i",&cedula);
+		if(!cedula)return;
 		persona=buscarCedula(p,cedula);
 		if (!persona){
 			system("cls");
@@ -2245,12 +2253,13 @@ void funcionDosDosCuatro(struct persona *p){ //FUNCION DE LA OPCION 2.2.4 DEL ME
 			system("pause");
 		}
 	}
-	printf("\n\t\tTitular: %s %s\n\n",persona->nombre, persona->apellidos);
-	system("pause");
+	
 	while (!vehiculo){
 		system("cls");
 		freeBuffer();
-		printf("\n\n\t\t\tIngrese la placa: ");
+		printf("\n\t\t\t\t\t   Titular: %s %s\n\n",persona->nombre, persona->apellidos);
+		printf("\n\n\t\t\tIngrese la placa que desea buscar");
+		printf("\n\n\t\t\t(0) Salir\n\n\t\t\t\t");
 		gets(placa);
 		strcpy(placa,strupr(placa));
 		if (!strcmp(placa,"0")) return;
@@ -2262,14 +2271,15 @@ void funcionDosDosCuatro(struct persona *p){ //FUNCION DE LA OPCION 2.2.4 DEL ME
 		}
 	}
 	system("cls");
-	infraccion = vehiculo->datosInfraccion;
-	printf("\n\n\t\tVehiculo %s\n",placa);
+	infraccion = copiarInfraccion(vehiculo->datosInfraccion);
+	printf("\n\t\t\t\t\t  Titular: %s %s\n\n",persona->nombre, persona->apellidos);
+	printf("\n\n\t\t\t\t\t     Vehiculo %s\n\n",placa);
 	if(!infraccion)printf("\n\n\t\tNO POSEE INFRACCIONES\n\n");
 	else{
 		ordenarBurbujaIFecha(&infraccion);//ordenar por fecha de infraccion
+		printf("\n\n\t\t\t\t\t     MULTAS NO PAGADAS");
 		for (int i = 1; infraccion; i++) {
 			if(!strcmp(infraccion->pagado,"NO")){
-				printf("\n\n\t\t Multas no pagadas");
 				printf("\n\n\t\t\t\t Infraccion %i",i);
 				printf("\n\n\t\tNumero: %i",infraccion->numero);
 				printf("\n\t\tTipo: %s",infraccion->tipo);
@@ -2279,11 +2289,12 @@ void funcionDosDosCuatro(struct persona *p){ //FUNCION DE LA OPCION 2.2.4 DEL ME
 			}
 			infraccion = infraccion->infraccionProx;
 		}
-		infraccion = vehiculo->datosInfraccion;
-		//ordenar por fecha de infraccion
+		
+		infraccion = copiarInfraccion(vehiculo->datosInfraccion);
+		ordenarBurbujaIFecha(&infraccion);
+		printf("\n\n\t\t\t\t\t      MULTAS PAGADAS");
 		for (int i = 1; infraccion; i++) {
 			if(!strcmp(infraccion->pagado,"SI")){
-				printf("\n\n\t\t Multas pagadas");
 				printf("\n\n\t\t\t\t Infraccion %i",i);
 				printf("\n\n\t\tNumero: %i",infraccion->numero);
 				printf("\n\t\tTipo: %s",infraccion->tipo);
@@ -2294,6 +2305,7 @@ void funcionDosDosCuatro(struct persona *p){ //FUNCION DE LA OPCION 2.2.4 DEL ME
 			infraccion = infraccion->infraccionProx;
 		}
 	}
+	printf("\n\n");
 	system("pause");	
 }
 
@@ -2310,8 +2322,10 @@ void funcionDosDosCinco(struct persona *p){ //FUNCION OPCION 2.2.5 DEL MENU
 		return;
 	}	
 	while (!persona){
-		printf("Ingrese la cedula:");
+		printf("\n\n\t\t\tIngrese el numero de cedula que desea buscar");
+		printf("\n\n\t\t\t(0) Salir\n\n\t\t\t\t");
 		scanf("%i",&cedula);
+		if(!cedula)return;
 		persona=buscarCedula(p,cedula);
 		if (!persona){
 			system("cls");
@@ -2319,14 +2333,16 @@ void funcionDosDosCinco(struct persona *p){ //FUNCION OPCION 2.2.5 DEL MENU
 			system("pause");
 		}
 	}
-	printf("\n\t\tTitular: %s %s\n\n",persona->nombre, persona->apellidos);
+	printf("\n\n\t\t\tTitular: %s %s\n\n",persona->nombre, persona->apellidos);
 	freeBuffer();
-	printf("\n\n\t\tIngrese el tipo de infraccion: ");
+	printf("\n\n\t\t\tIngrese el tipo de infraccion que desea buscar");
+	printf("\n\n\t\t\t(0) Salir\n\n\t\t\t\t");
 	gets(tipo);
 	strcpy(tipo,strupr(tipo));
+	if(!strcmp(tipo, "0")) return;
 	vehiculo = persona->datosVehiculo;
 		while(vehiculo->vehiculoProx){
-			infraccion=vehiculo->datosInfraccion;
+			infraccion = copiarInfraccion(vehiculo->datosInfraccion);
 			ordenarBurbujaIFecha(&infraccion);//ordenar por fecha de infraccion
 			while (infraccion){
 				if ((strcmp(tipo,infraccion->tipo))==0) {
@@ -2349,7 +2365,8 @@ void funcionDosDosCinco(struct persona *p){ //FUNCION OPCION 2.2.5 DEL MENU
 	system("pause");
 }
 
-void funcionDosTres(){                                  //FUNCION PARA LA OPCION 2.3 DEL MENU
+void funcionDosTres(struct persona *p){                                  //FUNCION PARA LA OPCION 2.3 DEL MENU
+	p = copiarPersona(p);
 	int pagadas=0, impagadas=0;
 	char placa[8];
 	struct infraccion *infraccion;
@@ -2396,6 +2413,7 @@ void funcionDosTres(){                                  //FUNCION PARA LA OPCION
 }
 
 void funcionesDosCuatro(struct persona *q, int num){                                  //FUNCION PARA LAS OPCIONES 2.4.1 Y 2.4.2 DEL MENU
+	q = copiarPersona(q);
 	int year1 = 0, year2 = 0, cont =0, monto=0;
 	char tipo[25],pagado[2];
 	struct persona *persona=q;
@@ -2643,3 +2661,65 @@ void ordenarBurbujaIFecha(struct infraccion **i){    //FUNCION PARA ORDENAR LAS 
 	}
 }
 ///////////////////////////////////////////////////////////FUNCIONES ORDENAR////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////FUNCIONES COPIAR////////////////////////////////////////////////////////////////
+
+struct infraccion *copiarInfraccion(struct infraccion *f){
+	struct infraccion *aux;
+	struct infraccion *r = NULL;
+	while(f){
+		aux = new struct infraccion;
+		strcpy(aux->tipo, f->tipo);
+		strcpy(aux->pagado, f->pagado);
+		aux->numero = f->numero;
+		aux->monto = f->monto;
+		aux->fechaInfraccion.dd = f->fechaInfraccion.dd;
+		aux->fechaInfraccion.mm = f->fechaInfraccion.mm;
+		aux->fechaInfraccion.yy = f->fechaInfraccion.yy;
+		aux->infraccionProx = r;
+		r =aux;
+		f = f->infraccionProx;
+	}
+	return r;
+}
+
+struct vehiculo *copiarVehiculo(struct vehiculo *v){
+	struct vehiculo *aux;
+	struct vehiculo *g = NULL;
+	while(v){
+		aux = new struct vehiculo;
+		strcpy(aux->placa, v->placa);
+		strcpy(aux->modelo, v->modelo);
+		strcpy(aux->marca,v->marca);
+		strcpy(aux->color,v->color);
+		aux->annio.yy = v->annio.yy;
+		aux->datosInfraccion = copiarInfraccion(v->datosInfraccion);
+		aux->vehiculoProx = g;
+		g =aux;
+		v = v->vehiculoProx;
+	}
+	return g;
+}
+
+struct persona *copiarPersona(struct persona *q){
+	struct persona *aux;
+	struct persona *h = NULL;
+	while(q){
+		aux = new struct persona;
+		strcpy(aux->nombre, q->nombre);
+		strcpy(aux->apellidos, q->apellidos);
+		strcpy(aux->place.direccion,q->place.direccion);
+		strcpy(aux->place.ciudad,q->place.ciudad);
+		aux->cedula = q->cedula;
+		aux->fechaNacimiento.dd = q->fechaNacimiento.dd;
+		aux->fechaNacimiento.mm = q->fechaNacimiento.mm;
+		aux->fechaNacimiento.yy = q->fechaNacimiento.yy;
+		aux->datosVehiculo = copiarVehiculo(q->datosVehiculo);
+		aux->personaProx = h;
+		h =aux;
+		q = q->personaProx;
+	}
+	return h;
+}
+
+///////////////////////////////////////////////////////////FUNCIONES COPIAR////////////////////////////////////////////////////////////////
