@@ -2341,8 +2341,8 @@ void funcionDosDosCinco(struct persona *p){ //FUNCION OPCION 2.2.5 DEL MENU
 	strcpy(tipo,strupr(tipo));
 	if(!strcmp(tipo, "0")) return;
 	vehiculo = persona->datosVehiculo;
-		while(vehiculo->vehiculoProx){
-			infraccion = copiarInfraccion(vehiculo->datosInfraccion);
+		while(vehiculo){
+			infraccion=vehiculo->datosInfraccion;
 			ordenarBurbujaIFecha(&infraccion);//ordenar por fecha de infraccion
 			while (infraccion){
 				if ((strcmp(tipo,infraccion->tipo))==0) {
