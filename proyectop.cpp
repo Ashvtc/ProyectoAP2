@@ -1,4 +1,4 @@
- /*Integrantes: Jose Alayon C.I 26.546.441
+/*Integrantes: Jose Alayon C.I 26.546.441
             	Ashly Colmenares C.I 28.052.693
 	    		Javier Rojas C.I 28.472.023
 	       		Alejandro Sangiacomo C.I 26.763.470 */
@@ -346,12 +346,6 @@ void ordenarBurbujaNumeroMulta(struct infraccion **f);    //ORDENA POR EL METODO
 void ordenarPersonaCedula(struct persona **p, int btn);   //ORDENA POR EL METODO BURBUJA LAS PERSONAS POR SU CEDULA
 
 void ordenarBurbujaIFecha(struct infraccion **i);          //ORDENA POR EL METODO BURBUJA LAS INFRACCIONES POR SU FECHA
-
-struct infraccion *copiarInfraccion(struct infraccion *f);
-
-struct vehiculo *copiarVehiculo(struct vehiculo *v);
-
-struct persona *copiarPersona(struct persona *q);
 
 int main(){         //*************************FUNCION PRINCIPAL***************************
 	llenarData(&p);
@@ -1743,6 +1737,7 @@ void consultarPersonaNombre(struct persona *p){
 	printf("\n\n\t\t\t\t    NO SE ENCONTRARON MAS DATOS\n\n");
 	system("pause");
 	system("cls");
+	printf("termino");
 }
 
 void consultarPersonaCedula(int cedula){
@@ -2201,7 +2196,7 @@ void funcionDosDosTres(struct persona *p){                                 //FUN
 	}
 	printf("\n\t\tTitular: %s %s",persona->nombre, persona->apellidos);
 	
-	vehiculos = copiarVehiculo(persona->datosVehiculo);
+	vehiculos = persona->datosVehiculo;
 	ordenarBurbujaPlaca(&vehiculos);
 	printf("\n\n\t\tMultas sin pagar:");
 	while (vehiculos){
@@ -2254,9 +2249,9 @@ void funcionDosDosCuatro(struct persona *p){ //FUNCION DE LA OPCION 2.2.4 DEL ME
 		}
 	}
 	
+	freeBuffer();
 	while (!vehiculo){
 		system("cls");
-		freeBuffer();
 		printf("\n\t\t\t\t\t   Titular: %s %s\n\n",persona->nombre, persona->apellidos);
 		printf("\n\n\t\t\tIngrese la placa que desea buscar");
 		printf("\n\n\t\t\t(0) Salir\n\n\t\t\t\t");
@@ -2271,7 +2266,7 @@ void funcionDosDosCuatro(struct persona *p){ //FUNCION DE LA OPCION 2.2.4 DEL ME
 		}
 	}
 	system("cls");
-	infraccion = copiarInfraccion(vehiculo->datosInfraccion);
+	infraccion = vehiculo->datosInfraccion;
 	printf("\n\t\t\t\t\t  Titular: %s %s\n\n",persona->nombre, persona->apellidos);
 	printf("\n\n\t\t\t\t\t     Vehiculo %s\n\n",placa);
 	if(!infraccion)printf("\n\n\t\tNO POSEE INFRACCIONES\n\n");
@@ -2290,7 +2285,7 @@ void funcionDosDosCuatro(struct persona *p){ //FUNCION DE LA OPCION 2.2.4 DEL ME
 			infraccion = infraccion->infraccionProx;
 		}
 		
-		infraccion = copiarInfraccion(vehiculo->datosInfraccion);
+		infraccion = vehiculo->datosInfraccion;
 		ordenarBurbujaIFecha(&infraccion);
 		printf("\n\n\t\t\t\t\t      MULTAS PAGADAS");
 		for (int i = 1; infraccion; i++) {
@@ -2309,7 +2304,7 @@ void funcionDosDosCuatro(struct persona *p){ //FUNCION DE LA OPCION 2.2.4 DEL ME
 	system("pause");	
 }
 
-void funcionDosDosCinco(struct persona *p){ //FUNCION OPCION 2.2.5 DEL MENU
+void funcionDosDosCinco(struct persona *p){ //Dado un tipo de infracción mostrar todas las multas completas que ha tenido agrupadas por vehículo (placa, marca, año) ordenadas por fecha de infracción (ascendente).
 	int cedula;
 	char tipo[40];
 	struct persona *persona=NULL;
@@ -2333,15 +2328,13 @@ void funcionDosDosCinco(struct persona *p){ //FUNCION OPCION 2.2.5 DEL MENU
 			system("pause");
 		}
 	}
-	printf("\n\n\t\t\tTitular: %s %s\n\n",persona->nombre, persona->apellidos);
+	printf("\n\t\tTitular: %s %s\n\n",persona->nombre, persona->apellidos);
 	freeBuffer();
-	printf("\n\n\t\t\tIngrese el tipo de infraccion que desea buscar");
-	printf("\n\n\t\t\t(0) Salir\n\n\t\t\t\t");
+	printf("\n\n\t\tIngrese el tipo de infraccion: ");
 	gets(tipo);
 	strcpy(tipo,strupr(tipo));
-	if(!strcmp(tipo, "0")) return;
 	vehiculo = persona->datosVehiculo;
-		while(vehiculo){
+		while((vehiculo)&&(vehiculo->vehiculoProx)){
 			infraccion=vehiculo->datosInfraccion;
 			ordenarBurbujaIFecha(&infraccion);//ordenar por fecha de infraccion
 			while (infraccion){
@@ -2366,7 +2359,6 @@ void funcionDosDosCinco(struct persona *p){ //FUNCION OPCION 2.2.5 DEL MENU
 }
 
 void funcionDosTres(struct persona *p){                                  //FUNCION PARA LA OPCION 2.3 DEL MENU
-	p = copiarPersona(p);
 	int pagadas=0, impagadas=0;
 	char placa[8];
 	struct infraccion *infraccion;
@@ -2413,7 +2405,6 @@ void funcionDosTres(struct persona *p){                                  //FUNCI
 }
 
 void funcionesDosCuatro(struct persona *q, int num){                                  //FUNCION PARA LAS OPCIONES 2.4.1 Y 2.4.2 DEL MENU
-	q = copiarPersona(q);
 	int year1 = 0, year2 = 0, cont =0, monto=0;
 	char tipo[25],pagado[2];
 	struct persona *persona=q;
@@ -2645,7 +2636,7 @@ void ordenarBurbujaIFecha(struct infraccion **i){    //FUNCION PARA ORDENAR LAS 
 		aux = *i;
 		fecha=(((((aux->fechaInfraccion.yy)*100)+(aux->fechaInfraccion.mm))*100)+(aux->fechaInfraccion.dd));
 		fecha2=(((((aux->infraccionProx->fechaInfraccion.yy)*100)+(aux->infraccionProx->fechaInfraccion.mm))*100)+(aux->infraccionProx->fechaInfraccion.dd));
-		while(aux->infraccionProx){
+		while((aux->infraccionProx)&&(aux)){
 			if (fecha > fecha2){
 				cambio++;
 				swapStr(aux->tipo,aux->infraccionProx->tipo); 
@@ -2661,65 +2652,3 @@ void ordenarBurbujaIFecha(struct infraccion **i){    //FUNCION PARA ORDENAR LAS 
 	}
 }
 ///////////////////////////////////////////////////////////FUNCIONES ORDENAR////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////FUNCIONES COPIAR////////////////////////////////////////////////////////////////
-
-struct infraccion *copiarInfraccion(struct infraccion *f){
-	struct infraccion *aux;
-	struct infraccion *r = NULL;
-	while(f){
-		aux = new struct infraccion;
-		strcpy(aux->tipo, f->tipo);
-		strcpy(aux->pagado, f->pagado);
-		aux->numero = f->numero;
-		aux->monto = f->monto;
-		aux->fechaInfraccion.dd = f->fechaInfraccion.dd;
-		aux->fechaInfraccion.mm = f->fechaInfraccion.mm;
-		aux->fechaInfraccion.yy = f->fechaInfraccion.yy;
-		aux->infraccionProx = r;
-		r =aux;
-		f = f->infraccionProx;
-	}
-	return r;
-}
-
-struct vehiculo *copiarVehiculo(struct vehiculo *v){
-	struct vehiculo *aux;
-	struct vehiculo *g = NULL;
-	while(v){
-		aux = new struct vehiculo;
-		strcpy(aux->placa, v->placa);
-		strcpy(aux->modelo, v->modelo);
-		strcpy(aux->marca,v->marca);
-		strcpy(aux->color,v->color);
-		aux->annio.yy = v->annio.yy;
-		aux->datosInfraccion = copiarInfraccion(v->datosInfraccion);
-		aux->vehiculoProx = g;
-		g =aux;
-		v = v->vehiculoProx;
-	}
-	return g;
-}
-
-struct persona *copiarPersona(struct persona *q){
-	struct persona *aux;
-	struct persona *h = NULL;
-	while(q){
-		aux = new struct persona;
-		strcpy(aux->nombre, q->nombre);
-		strcpy(aux->apellidos, q->apellidos);
-		strcpy(aux->place.direccion,q->place.direccion);
-		strcpy(aux->place.ciudad,q->place.ciudad);
-		aux->cedula = q->cedula;
-		aux->fechaNacimiento.dd = q->fechaNacimiento.dd;
-		aux->fechaNacimiento.mm = q->fechaNacimiento.mm;
-		aux->fechaNacimiento.yy = q->fechaNacimiento.yy;
-		aux->datosVehiculo = copiarVehiculo(q->datosVehiculo);
-		aux->personaProx = h;
-		h =aux;
-		q = q->personaProx;
-	}
-	return h;
-}
-
-///////////////////////////////////////////////////////////FUNCIONES COPIAR////////////////////////////////////////////////////////////////
